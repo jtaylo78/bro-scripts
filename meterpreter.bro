@@ -25,8 +25,13 @@ event tcp_packet(c: connection, is_orig: bool, flags: string,
         {
         if (c$meterpreter_payload_size == ack-5)
             {
-            print( fmt("%DT: Possible Meterpreter Payload transfered! %s:%s -> %s:%s",
-               c$start_time, c$id$resp_h, c$id$resp_p, c$id$orig_h, c$id$orig_p));
+            NOTICE([$note=FoxIT::Meterpreter,
+                       $msg=fmt("%DT: Possible Meterpreter Payload transfered! %s:%s -> %s:%s",
+               c$start_time, c$id$resp_h, c$id$resp_p, c$id$orig_h, c$id$orig_p),
+                                $conn=c,
+                                $src=c$id$orig_h,
+                                $dst=c$id$resp_h,
+                                $identifier=cat(c$id$resp_h,c$id$orig_h)]);
             }
         }
 }
